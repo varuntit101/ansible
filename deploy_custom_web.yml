@@ -3,23 +3,27 @@
   hosts: all
   become: yes
 
-  # Define the variables for this play
   vars:
     page_title: "Ansible Deployed Site"
     welcome_message: "Welcome to Our Automated Web Server!"
     your_name: "Varun"
+    packages_to_install:
+      - nginx
+      - git
+      - tree
 
   tasks:
-    - name: Ensure nginx is installed
+    - name: Ensure required packages are installed
       ansible.builtin.apt:
-        name: nginx
+        name: "{{ item }}"
         state: present
         update_cache: yes
+      loop: "{{ packages_to_install }}"
 
     - name: Deploy custom index.html from template
       ansible.builtin.template:
-        src: index.html.j2  # The template file on your control node
-        dest: /var/www/html/index.html # The destination on the managed node
+        src: index.html.j2
+        dest: /var/www/html/index.html
         owner: www-data
         group: www-data
         mode: '0644'
