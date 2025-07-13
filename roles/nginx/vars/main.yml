@@ -1,0 +1,9 @@
+---
+page_title: "Ansible Deployed Site"
+welcome_message: "Welcome to Our Automated Web Server!"
+your_name: "Varun"
+packages_to_install:
+  - nginx
+  - git
+  - tree
+create_motd: true
