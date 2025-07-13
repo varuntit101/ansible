@@ -11,6 +11,8 @@
       - nginx
       - git
       - tree
+    # This new variable will control our conditional task
+    create_motd: true
 
   tasks:
     - name: Ensure required packages are installed
@@ -27,6 +29,16 @@
         owner: www-data
         group: www-data
         mode: '0644'
+
+    # This is our new conditional task
+    - name: Create a message of the day file
+      ansible.builtin.copy:
+        content: "This server is managed by Ansible.\nWelcome, {{ your_name }}!\n"
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: '0644'
+      when: create_motd == true
 
     - name: Ensure nginx is started and enabled
       ansible.builtin.service:
