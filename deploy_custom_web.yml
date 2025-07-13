@@ -1,0 +1,31 @@
+---
+- name: Install NGINX and Deploy Custom Web Page
+  hosts: all
+  become: yes
+
+  # Define the variables for this play
+  vars:
+    page_title: "Ansible Deployed Site"
+    welcome_message: "Welcome to Our Automated Web Server!"
+    your_name: "Varun"
+
+  tasks:
+    - name: Ensure nginx is installed
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Deploy custom index.html from template
+      ansible.builtin.template:
+        src: index.html.j2  # The template file on your control node
+        dest: /var/www/html/index.html # The destination on the managed node
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Ensure nginx is started and enabled
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: yes
