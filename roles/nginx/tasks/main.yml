@@ -8,7 +8,7 @@
 
 - name: Deploy custom index.html from template
   ansible.builtin.template:
-    src: index.html.j2
+    src: index.html
     dest: /var/www/html/index.html
     owner: www-data
     group: www-data
